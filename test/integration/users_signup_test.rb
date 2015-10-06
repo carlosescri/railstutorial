@@ -8,6 +8,11 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
                               password_confirmation: "bar"}
     end
     assert_template 'users/new'
+    assert_select '#error_explanation'
+    assert_select '.field_with_errors #user_name'
+    assert_select '.field_with_errors #user_email'
+    assert_select '.field_with_errors #user_password'
+    assert_select '.field_with_errors #user_password_confirmation'
   end
 
   test "valid signup data should success" do
@@ -19,5 +24,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
                                            password_confirmation: "foobar"}
     end
     assert_template 'users/show'
+    assert_not flash.empty?
+    assert_select '.alert-success'
   end
 end
