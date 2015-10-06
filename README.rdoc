@@ -1,5 +1,7 @@
 == README
 
+https://www.railstutorial.org/book/sign_up#sec-professional_grade_deployment
+
 This README would normally document whatever steps are necessary to get the
 application up and running.
 
