@@ -16,7 +16,10 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
   end
 
   test "log in with valid information then log out" do
+    # Visit log in page
     get login_path
+
+    # Send log in form
     post login_path, session: { email: @user.email, password: "password" }
     assert_redirected_to @user
 
@@ -27,9 +30,13 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     assert_select "a[href=?]", user_path(@user)
     assert is_logged_in?
 
+    # Click the log out link
     delete logout_path
     assert_not is_logged_in?
     assert_redirected_to root_url
+
+    # Simulate a second log out from a different browser
+    delete logout_path
 
     follow_redirect!
     assert_select "a[href=?]", login_path
