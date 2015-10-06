@@ -6,4 +6,11 @@ class User < ActiveRecord::Base
                     uniqueness: { case_sensitive: false }
   has_secure_password
   validates :password, presence: true, length: { minimum: 6 }
+
+  # Returns the hash digest for the given plain password
+  def User.digest(plain_password)
+    cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
+                                                  BCrypt::ENgine.cost
+    BCrypt::Password.create(plain_password, cost: cost)
+  end
 end
