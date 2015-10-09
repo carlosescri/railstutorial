@@ -8,7 +8,11 @@ class User < ActiveRecord::Base
                     format: /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i,
                     uniqueness: { case_sensitive: false }
   has_secure_password
-  validates :password, presence: true, length: { minimum: 6 }
+  # has_secure_password includes a separate presence validation that specifically
+  # catches nil passwords. Because nil passwords now bypass the main presence
+  # validation but are still caught by has_secure_password, this also fixes the
+  # duplicate error message.
+  validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
 
   # Returns the hash digest for the given plain password
   def User.digest(plain_password)
