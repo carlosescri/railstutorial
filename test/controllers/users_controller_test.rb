@@ -40,4 +40,12 @@ class UsersControllerTest < ActionController::TestCase
     assert_redirected_to login_url
   end
 
+  test "a user should not be able to promote itself as admin" do
+    log_in_as @other_user
+    patch :update, id: @other_user, user: { name: @other_user.name,
+                                            email: @other_user.email,
+                                            admin: 1 }
+    @other_user.reload
+    assert_not @other_user.admin?
+  end
 end
