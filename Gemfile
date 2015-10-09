@@ -46,6 +46,9 @@ group :development, :test do
 
   # Use sqlite3 as the database for Active Record
   gem 'sqlite3', '1.3.10'
+
+  # Easily generates fake data
+  gem 'faker', '1.5.0'
 end
 
 group :test do
