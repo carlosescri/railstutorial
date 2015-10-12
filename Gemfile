@@ -32,6 +32,11 @@ gem 'bcrypt', '3.1.10'
 gem 'will_paginate', '3.0.7'
 gem 'bootstrap-will_paginate', '~> 0.0.10'
 
+# Uploads
+gem 'carrierwave', '0.10.0'
+gem 'mini_magick', '4.3.6'
+gem 'fog', '1.34.0'
+
 # Use Unicorn as the app server
 # gem 'unicorn'
 
