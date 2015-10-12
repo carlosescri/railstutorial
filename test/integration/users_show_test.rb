@@ -1,19 +1,32 @@
 require 'test_helper'
 
 class UsersShowTest < ActionDispatch::IntegrationTest
-  test "an active user can be shown" do
-    user = users(:elena)
-    user.update_attribute(:activated, true)
+  include ApplicationHelper
 
-    get user_path(user)
-    assert_template 'users/show'
+  def setup
+    @user = users(:elena)
   end
 
   test "an inactive user cannot be shown" do
-    user = users(:elena)
-    user.update_attribute(:activated, false)
-
-    get user_path(user)
+    @user.update_attribute(:activated, false)
+    get user_path(@user)
     assert_redirected_to root_url
+  end
+
+  test "profile display" do
+    get user_path(@user)
+
+    assert_template 'users/show'
+
+    assert_select 'title', full_title(@user.name)
+    assert_select 'h1', text: @user.name
+    assert_select 'h1 > img.gravatar'
+    assert_select 'div.pagination'
+
+    assert_match @user.microposts.count.to_s, response.body
+
+    @user.microposts.paginate(page: 1).each do |micropost|
+      assert_match micropost.content, response.body
+    end
   end
 end
