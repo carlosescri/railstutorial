@@ -87,9 +87,21 @@ class User < ActiveRecord::Base
   end
 
   def feed
+    # First Attempt:
     # following_ids is the same as self.following.map(&:id) and is
     # provided by Rails
-    Micropost.where('user_id IN (?) or user_id = ?', following_ids, id)
+    #
+    # Micropost.where('user_id IN (?) or user_id = ?', following_ids, id)
+
+    # Second Attempt:
+    # The subselect won’t scale forever. For bigger sites, you would
+    # probably need to generate the feed asynchronously using a
+    # background job, but such scaling subtleties are beyond the scope
+    # of this tutorial.
+    following_ids = "SELECT followed_id FROM relationships
+                     WHERE follower_id = :user_id"
+    Micropost.where("user_id IN (#{following_ids}) OR user_id = :user_id",
+                    following_ids: following_ids, user_id: id)
   end
 
   def follow(other_user)
