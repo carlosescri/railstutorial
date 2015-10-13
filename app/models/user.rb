@@ -87,8 +87,9 @@ class User < ActiveRecord::Base
   end
 
   def feed
-    # The same as using "microposts" directly but we'll need this later
-    Micropost.where('user_id = ?', id)
+    # following_ids is the same as self.following.map(&:id) and is
+    # provided by Rails
+    Micropost.where('user_id IN (?) or user_id = ?', following_ids, id)
   end
 
   def follow(other_user)

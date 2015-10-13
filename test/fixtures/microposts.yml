@@ -1,3 +1,13 @@
+richi1:
+  content: "Writing a  very short test"
+  created_at: <%= 2.minutes.ago %>
+  user: ricardo
+
+richi2:
+  content: "Writing another short test"
+  created_at: <%= 1.minutes.ago %>
+  user: ricardo
+
 orange:
   content: "I just ate an orange!"
   created_at: <%= 10.minutes.ago %>
